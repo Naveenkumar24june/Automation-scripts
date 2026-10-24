@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# --- Configuration ---
+SCRIPT_TO_RUN="/root/Naveen_Kumar/redhat_old_kernel_removal.sh"
+REMOTE_SCRIPT_PATH="redhat_old_kernel_removal.sh"
+LOG_FILE="/root/Naveen_Kumar/script_logs/output_$(date +%Y-%m-%d).log"
+
+# List of servers
+SERVERS=(
+    "pa-syslog"
+    "pa-rhel7-test"
+    "pa-movbot-prd"
+    "pa-jenkins-prd"
+    "PA-IXIA-LIN1"
+    "pa-capsmp2-prd"
+    "eu-basr0-lin-p"
+    "pa-ns1-int"
+    "tr-ps-lnx1"
+    "pa-vvap-prod-1"
+    "eu-capsmp2-prd"
+)
+
+# --- Setup ---
+if [ ! -f "$SCRIPT_TO_RUN" ]; then
+    echo "Error: Local script $SCRIPT_TO_RUN not found."
+    exit 1
+fi
+
+echo "========== LOG STARTED: $(date) ==========" > "$LOG_FILE"
+echo >> "$LOG_FILE"
+
+# --- Main Logic ---
+for SERVER in "${SERVERS[@]}"; do
+    TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+    echo "===== [$TIMESTAMP] Running on $SERVER =====" | tee -a "$LOG_FILE"
+
+    # Copy script to remote server
+    scp -o ConnectTimeout=10 -o StrictHostKeyChecking=no "$SCRIPT_TO_RUN" "$SERVER:$REMOTE_SCRIPT_PATH" \
+        2>>"$LOG_FILE"
+    if [ $? -ne 0 ]; then
+        echo "[ERROR] Failed to copy script to $SERVER" | tee -a "$LOG_FILE"
+        continue
+    fi
+
+    # Run the script and remove it after execution
+    ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no "$SERVER" "
+        echo '--- Running on: \$(hostname) ---';
+        bash $REMOTE_SCRIPT_PATH;
+        rm -f $REMOTE_SCRIPT_PATH
+    " >> "$LOG_FILE"
+
+    echo "===== Done with $SERVER =====" | tee -a "$LOG_FILE"
+    echo | tee -a "$LOG_FILE"
+done
+
+
