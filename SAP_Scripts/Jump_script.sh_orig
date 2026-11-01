@@ -7,8 +7,6 @@ LOG_FILE="/root/Naveen_Kumar/script_logs/output_$(date +%Y-%m-%d).log"
 
 # List of servers
 SERVERS=(
-    "pa-syslog"
-    "pa-rhel7-test"
     "pa-movbot-prd"
     "pa-jenkins-prd"
     "PA-IXIA-LIN1"
