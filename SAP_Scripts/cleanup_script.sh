@@ -2,7 +2,7 @@
 
 LOG_FILE="/var/log/disk_cleanup.log"
 OMS_LOG="/var/opt/microsoft/omsconfig/omsconfig.log"
-USAGE_THRESHOLD=85
+USAGE_THRESHOLD=80
 CUSTOM_ROTATE_DIR="/etc/logrotate.d/custom_cleanup"
 
 mkdir -p "$CUSTOM_ROTATE_DIR"
