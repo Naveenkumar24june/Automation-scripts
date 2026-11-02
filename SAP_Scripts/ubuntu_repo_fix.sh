@@ -3,6 +3,7 @@
 #############################################
 # Enterprise APT Repository Sanitizer
 # Supports: Ubuntu & Debian & Unix
+# Authon: Naveen
 #############################################
 
 DATE=$(date +"%Y-%m-%d_%H-%M-%S")

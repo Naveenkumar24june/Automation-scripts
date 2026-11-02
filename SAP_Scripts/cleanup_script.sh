@@ -28,7 +28,7 @@ check_root() {
     fi
 }
 
-# Function to determine the OS and log it
+# Function to determine the OS and log 
 log_os_info() {
     if [ -f /etc/redhat-release ]; then
         os="RHEL"
