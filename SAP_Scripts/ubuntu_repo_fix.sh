@@ -2,7 +2,7 @@
 
 #############################################
 # Enterprise APT Repository Sanitizer
-# Supports: Ubuntu & Debian
+# Supports: Ubuntu & Debian & Unix
 #############################################
 
 DATE=$(date +"%Y-%m-%d_%H-%M-%S")
